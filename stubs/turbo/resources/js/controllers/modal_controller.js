@@ -3,8 +3,11 @@ import { enter, leave } from 'el-transition'
 
 // Usage: data-controller="modal"
 export default class extends Controller {
+    static targets = ['content', 'overlay']
+
     static values = {
-        open: false,
+        open: { type: Boolean, default: false },
+        focusable: { type: Boolean, default: false },
     }
 
     toggle() {

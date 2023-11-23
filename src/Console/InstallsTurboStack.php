@@ -26,6 +26,15 @@ trait InstallsTurboStack
             return 1;
         }
 
+        // Install Packages...
+        if ($importmaps) {
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']);
+        }
+
+        Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'turbo:install']);
+        Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'stimulus:install']);
+
         // Controllers
         (new Filesystem)->ensureDirectoryExists(app_path('Http'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/app/Http', app_path('Http'));
@@ -83,15 +92,6 @@ trait InstallsTurboStack
 
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/controllers', resource_path('js/controllers'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/libs', resource_path('js/libs'));
-
-        // Install Packages...
-        if ($importmaps) {
-            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
-            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']);
-        }
-
-        Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'turbo:install']);
-        Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'stimulus:install']);
 
         if ($importmaps) {
            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:pin', 'el-transition']);

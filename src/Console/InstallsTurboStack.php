@@ -27,23 +27,23 @@ trait InstallsTurboStack
 
         // Controllers
         (new Filesystem)->ensureDirectoryExists(app_path('Http'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/app/Http', app_path('Http'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/app/Http', app_path('Http'));
 
         // Views...
         (new Filesystem)->ensureDirectoryExists(resource_path('views'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/resources/views', resource_path('views'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/views', resource_path('views'));
 
         // Views Components...
         (new Filesystem)->ensureDirectoryExists(resource_path('views/components'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/resources/views/components', resource_path('views/components'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/views/components', resource_path('views/components'));
 
         // Views Layouts...
         (new Filesystem)->ensureDirectoryExists(resource_path('views/layouts'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/resources/views/layouts', resource_path('views/layouts'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/views/layouts', resource_path('views/layouts'));
 
         // Components...
         (new Filesystem)->ensureDirectoryExists(app_path('View/Components'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/app/View/Components', app_path('View/Components'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/app/View/Components', app_path('View/Components'));
 
         // Dark mode...
         if (! $this->option('dark')) {
@@ -60,26 +60,28 @@ trait InstallsTurboStack
         }
 
         // Routes...
-        copy(__DIR__.'/../../stubs/default/routes/web.php', base_path('routes/web.php'));
-        copy(__DIR__.'/../../stubs/default/routes/auth.php', base_path('routes/auth.php'));
+        copy(__DIR__.'/../../stubs/turbo/routes/web.php', base_path('routes/web.php'));
+        copy(__DIR__.'/../../stubs/turbo/routes/auth.php', base_path('routes/auth.php'));
 
         // "Dashboard" Route...
         $this->replaceInFile('/home', '/dashboard', app_path('Providers/RouteServiceProvider.php'));
 
+        // Vite stuff...
         if (! $importmaps) {
-            copy(__DIR__.'/../../stubs/default/postcss.config.js', base_path('postcss.config.js'));
-            copy(__DIR__.'/../../stubs/default/vite.config.js', base_path('vite.config.js'));
+            copy(__DIR__.'/../../stubs/turbo/postcss.config.js', base_path('postcss.config.js'));
+            copy(__DIR__.'/../../stubs/turbo/vite.config.js', base_path('vite.config.js'));
         }
 
-        copy(__DIR__.'/../../stubs/default/tailwind.config.js', base_path('tailwind.config.js'));
-        copy(__DIR__.'/../../stubs/default/resources/css/app.css', resource_path('css/app.css'));
+        // TailwindCSS...
+        copy(__DIR__.'/../../stubs/turbo/tailwind.config.js', base_path('tailwind.config.js'));
+        copy(__DIR__.'/../../stubs/turbo/resources/css/app.css', resource_path('css/app.css'));
 
-        // Components + Pages...
+        // Components...
         (new Filesystem)->ensureDirectoryExists(resource_path('js/controllers'));
         (new Filesystem)->ensureDirectoryExists(resource_path('js/libs'));
 
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/detault/resources/js/controllers', resource_path('js/controllers'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/resources/js/libs', resource_path('js/libs'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/controllers', resource_path('js/controllers'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/libs', resource_path('js/libs'));
 
         // Install Packages...
         if ($importmaps) {
@@ -90,13 +92,15 @@ trait InstallsTurboStack
         Process::forever()->run([$this->phpBinary(), 'artisan', 'turbo:install'], base_path());
         Process::forever()->run([$this->phpBinary(), 'artisan', 'stimulus:install'], base_path());
 
-        if ( ! $importmaps) {
+        if ($importmaps) {
+           Process::forever()->run([$this->phpBinary(), 'artisan', 'importmap:pin', 'el-transition']);
+        } else {
             if (file_exists(base_path('pnpm-lock.yaml'))) {
-                $this->runCommands(['pnpm install', 'pnpm run build']);
+                $this->runCommands(['pnpm install', 'pnpm install el-transition', 'pnpm run build']);
             } elseif (file_exists(base_path('yarn.lock'))) {
-                $this->runCommands(['yarn install', 'yarn run build']);
+                $this->runCommands(['yarn install', 'yarn add el-transition', 'yarn run build']);
             } else {
-                $this->runCommands(['npm install', 'npm run build']);
+                $this->runCommands(['npm install', 'npm install el-transition', 'npm run build']);
             }
         }
 

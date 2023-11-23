@@ -85,15 +85,15 @@ trait InstallsTurboStack
 
         // Install Packages...
         if ($importmaps) {
-            Process::forever()->run([$this->phpBinary(), 'artisan', 'importmap:install'], base_path());
-            Process::forever()->run([$this->phpBinary(), 'artisan', 'tailwindcss:install'], base_path());
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']);
         }
 
-        Process::forever()->run([$this->phpBinary(), 'artisan', 'turbo:install'], base_path());
-        Process::forever()->run([$this->phpBinary(), 'artisan', 'stimulus:install'], base_path());
+        Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'turbo:install']);
+        Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'stimulus:install']);
 
         if ($importmaps) {
-           Process::forever()->run([$this->phpBinary(), 'artisan', 'importmap:pin', 'el-transition']);
+           Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:pin', 'el-transition']);
         } else {
             if (file_exists(base_path('pnpm-lock.yaml'))) {
                 $this->runCommands(['pnpm install', 'pnpm install el-transition', 'pnpm run build']);

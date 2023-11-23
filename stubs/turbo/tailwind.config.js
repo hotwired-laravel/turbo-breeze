@@ -12,6 +12,17 @@ module.exports = {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+
+            animation: {
+                'appear-then-fade-out': 'appear-then-fade-out 3s both',
+            },
+
+            keyframes: () => ({
+                ['appear-then-fade-out']: {
+                    '0%, 100%': { opacity: 0 },
+                    '10%, 80%': { opacity: 1 },
+                },
+            }),
         },
     },
     plugins: [

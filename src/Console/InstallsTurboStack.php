@@ -26,6 +26,13 @@ trait InstallsTurboStack
             return 1;
         }
 
+        // Adds the JavaScript files (before running importmap:install)...
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/controllers'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/libs'));
+
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/controllers', resource_path('js/controllers'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/libs', resource_path('js/libs'));
+
         // Install Packages...
         if ($importmaps) {
             Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
@@ -85,13 +92,6 @@ trait InstallsTurboStack
         // TailwindCSS...
         copy(__DIR__.'/../../stubs/turbo/tailwind.config.js', base_path('tailwind.config.js'));
         copy(__DIR__.'/../../stubs/turbo/resources/css/app.css', resource_path('css/app.css'));
-
-        // Components...
-        (new Filesystem)->ensureDirectoryExists(resource_path('js/controllers'));
-        (new Filesystem)->ensureDirectoryExists(resource_path('js/libs'));
-
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/controllers', resource_path('js/controllers'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/libs', resource_path('js/libs'));
 
         if ($importmaps) {
            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:pin', 'el-transition']);

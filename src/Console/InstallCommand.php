@@ -75,9 +75,9 @@ class InstallCommand extends Command implements PromptsForMissingInput
             return false;
         }
 
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/tests/Feature', base_path('tests/Feature'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/tests/Unit', base_path('tests/Unit'));
-        (new Filesystem)->copy(__DIR__.'/../../stubs/default/tests/Pest.php', base_path('tests/Pest.php'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/tests/Feature', base_path('tests/Feature'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/tests/Unit', base_path('tests/Unit'));
+        (new Filesystem)->copy(__DIR__.'/../../stubs/turbo/tests/Pest.php', base_path('tests/Pest.php'));
 
         return true;
     }

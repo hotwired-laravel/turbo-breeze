@@ -1,4 +1,4 @@
-import Stimulus from '../libs/controllers'
+import Stimulus from '../libs/stimulus'
 
 import ResponsiveNav from './responsive_nav_controller'
 Stimulus.register('responsive-nav', ResponsiveNav)

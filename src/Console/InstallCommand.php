@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Breeze\Console;
+namespace HotwiredLaravel\TurboBreeze\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
@@ -19,18 +19,15 @@ use function Laravel\Prompts\select;
 
 class InstallCommand extends Command implements PromptsForMissingInput
 {
-    use InstallsApiStack, InstallsBladeStack, InstallsInertiaStacks, InstallsLivewireStack;
+    use InstallsTurboStack;
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'breeze:install {stack : The development stack that should be installed (blade,livewire,livewire-functional,react,vue,api)}
+    protected $signature = 'turbo-breeze:install {stack : The development stack that should be installed (turbo,turbo-vite)}
                             {--dark : Indicate that dark mode support should be installed}
-                            {--pest : Indicate that Pest should be installed}
-                            {--ssr : Indicates if Inertia SSR support should be installed}
-                            {--typescript : Indicates if TypeScript is preferred for the Inertia stack (Experimental)}
                             {--composer=global : Absolute path to the Composer binary which should be used to install packages}';
 
     /**
@@ -47,23 +44,18 @@ class InstallCommand extends Command implements PromptsForMissingInput
      */
     public function handle()
     {
-        if ($this->argument('stack') === 'vue') {
-            return $this->installInertiaVueStack();
-        } elseif ($this->argument('stack') === 'react') {
-            return $this->installInertiaReactStack();
-        } elseif ($this->argument('stack') === 'api') {
-            return $this->installApiStack();
-        } elseif ($this->argument('stack') === 'blade') {
-            return $this->installBladeStack();
-        } elseif ($this->argument('stack') === 'livewire') {
-            return $this->installLivewireStack();
-        } elseif ($this->argument('stack') === 'livewire-functional') {
-            return $this->installLivewireStack(true);
-        }
+        return match ($this->argument('stack')) {
+            'turbo' => $this->installTurboStack(),
+            'turbo-vite' => $this->installTurboStack(false),
+            default => $this->unsupportedStack(),
+        };
+    }
 
-        $this->components->error('Invalid stack. Supported stacks are [blade], [livewire], [livewire-functional], [react], [vue], and [api].');
+    protected function unsupportedStack(): int
+    {
+        $this->components->error('Invalid stack. Supported stacks are [turbo], [turbo-vite].');
 
-        return 1;
+        return self::FAILURE;
     }
 
     /**
@@ -75,28 +67,17 @@ class InstallCommand extends Command implements PromptsForMissingInput
     {
         (new Filesystem)->ensureDirectoryExists(base_path('tests/Feature'));
 
-        $stubStack = match ($this->argument('stack')) {
-            'api' => 'api',
-            'livewire' => 'livewire-common',
-            'livewire-functional' => 'livewire-common',
-            default => 'default',
-        };
-
-        if ($this->option('pest') || $this->isUsingPest()) {
-            if ($this->hasComposerPackage('phpunit/phpunit')) {
-                $this->removeComposerPackages(['phpunit/phpunit'], true);
-            }
-
-            if (! $this->requireComposerPackages(['pestphp/pest:^2.0', 'pestphp/pest-plugin-laravel:^2.0'], true)) {
-                return false;
-            }
-
-            (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/'.$stubStack.'/pest-tests/Feature', base_path('tests/Feature'));
-            (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/'.$stubStack.'/pest-tests/Unit', base_path('tests/Unit'));
-            (new Filesystem)->copy(__DIR__.'/../../stubs/'.$stubStack.'/pest-tests/Pest.php', base_path('tests/Pest.php'));
-        } else {
-            (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/'.$stubStack.'/tests/Feature', base_path('tests/Feature'));
+        if ($this->hasComposerPackage('phpunit/phpunit')) {
+            $this->removeComposerPackages(['phpunit/phpunit'], true);
         }
+
+        if (! $this->requireComposerPackages(['pestphp/pest:^2.0', 'pestphp/pest-plugin-laravel:^2.0'], true)) {
+            return false;
+        }
+
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/tests/Feature', base_path('tests/Feature'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/tests/Unit', base_path('tests/Unit'));
+        (new Filesystem)->copy(__DIR__.'/../../stubs/default/tests/Pest.php', base_path('tests/Pest.php'));
 
         return true;
     }
@@ -314,14 +295,10 @@ class InstallCommand extends Command implements PromptsForMissingInput
     {
         return [
             'stack' => fn () => select(
-                label: 'Which Breeze stack would you like to install?',
+                label: 'Which Turbo Breeze stack would you like to install?',
                 options: [
-                    'blade' => 'Blade with Alpine',
-                    'livewire' => 'Livewire (Volt Class API) with Alpine',
-                    'livewire-functional' => 'Livewire (Volt Functional API) with Alpine',
-                    'react' => 'React with Inertia',
-                    'vue' => 'Vue with Inertia',
-                    'api' => 'API only',
+                    'turbo' => 'Turbo, Stimulus, Importmap, and TailwindCSS (no build)',
+                    'turbo-vite' => 'Turbo, Stimulus, Vite, and TailwindCSS',
                 ],
                 scroll: 6,
             ),
@@ -337,29 +314,10 @@ class InstallCommand extends Command implements PromptsForMissingInput
      */
     protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output)
     {
-        $stack = $input->getArgument('stack');
-
-        if (in_array($stack, ['react', 'vue'])) {
-            collect(multiselect(
-                label: 'Would you like any optional features?',
-                options: [
-                    'dark' => 'Dark mode',
-                    'ssr' => 'Inertia SSR',
-                    'typescript' => 'TypeScript (experimental)',
-                ]
-            ))->each(fn ($option) => $input->setOption($option, true));
-        } elseif (in_array($stack, ['blade', 'livewire', 'livewire-functional'])) {
-            $input->setOption('dark', confirm(
-                label: 'Would you like dark mode support?',
-                default: false
-            ));
-        }
-
-        $input->setOption('pest', select(
-            label: 'Which testing framework do you prefer?',
-            options: ['PHPUnit', 'Pest'],
-            default: $this->isUsingPest() ? 'Pest' : 'PHPUnit',
-        ) === 'Pest');
+        $input->setOption('dark', confirm(
+            label: 'Would you like dark mode support?',
+            default: false
+        ));
     }
 
     /**

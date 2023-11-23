@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Breeze;
+namespace HotwiredLaravel\TurboBreeze;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;

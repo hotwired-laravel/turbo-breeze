@@ -52,11 +52,10 @@
 
             @if (session('status') === 'profile-updated')
                 <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600 dark:text-gray-400"
+                    data-turbo-temporary
+                    data-controller="flash"
+                    data-action="animationend->flash#remove"
+                    class="text-sm text-gray-600 dark:text-gray-400 animate-appear-then-fade-out"
                 >{{ __('Saved.') }}</p>
             @endif
         </div>

@@ -1,16 +1,16 @@
 {
-    "name": "laravel/breeze",
-    "description": "Minimal Laravel authentication scaffolding with Blade and Tailwind.",
+    "name": "hotwired-laravel/turbo-breeze",
+    "description": "Minimal Laravel authentication scaffolding with Turbo.",
     "keywords": ["laravel", "auth"],
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/laravel/breeze/issues",
-        "source": "https://github.com/laravel/breeze"
+        "issues": "https://github.com/hotwired-laravel/turbo-breeze/issues",
+        "source": "https://github.com/hotwired-laravel/turbo-breeze"
     },
     "authors": [
         {
-            "name": "Taylor Otwell",
-            "email": "taylor@laravel.com"
+            "name": "Tony Messias",
+            "email": "tonysm@hey.com"
         }
     ],
     "require": {
@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Laravel\\Breeze\\": "src/"
+            "HotwiredLaravel\\TurboBreeze\\": "src/"
         }
     },
     "extra": {
@@ -31,7 +31,7 @@
         },
         "laravel": {
             "providers": [
-                "Laravel\\Breeze\\BreezeServiceProvider"
+                "HotwiredLaravel\\TurboBreeze\\BreezeServiceProvider"
             ]
         }
     },

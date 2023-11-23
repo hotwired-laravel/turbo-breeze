@@ -17,9 +17,10 @@ trait InstallsTurboStack
     protected function installTurboStack(bool $importmaps = true)
     {
         // Install Turbo Laravel, Stimulus Laravel, Importmap Laravel, and TailwindCSS Laravel...
-        $packages = ['hotwired-laravel/turbo-laravel:2.x-dev', 'hotwired-laravel/stimulus-laravel:^0.3'] + ($importmaps ? [
-            'tonysm/importmap-laravel:^1.8', 'tonysm/tailwindcss-laravel:^0.11'
-        ] : []);
+        $packages = array_merge(
+            ['hotwired-laravel/turbo-laravel:2.x-dev', 'hotwired-laravel/stimulus-laravel:^0.3'],
+            $importmaps ? ['tonysm/importmap-laravel:^1.8', 'tonysm/tailwindcss-laravel:^0.11'] : [],
+        );
 
         if (! $this->requireComposerPackages($packages)) {
             return 1;

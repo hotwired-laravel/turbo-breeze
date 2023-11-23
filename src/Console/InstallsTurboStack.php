@@ -104,6 +104,20 @@ trait InstallsTurboStack
             }
         }
 
+        if ($importmaps) {
+            $this->runStorageLinkCommand();
+        }
+
         $this->components->info('Breeze scaffolding installed successfully.');
+    }
+
+    protected function runStorageLinkCommand(): void
+    {
+        if ($this->hasComposerPackage('laravel/sail') && file_exists(base_path('docker-compose.yml'))) {
+            Process::run([base_path('vendor/bin/sail'), 'up', '-d']);
+            Process::run([base_path('vendor/bin/sail'), 'artisan', 'storage:link']);
+        } else {
+            Process::run([$this->phpBinary(), 'artisan', 'storage:link']);
+        }
     }
 }

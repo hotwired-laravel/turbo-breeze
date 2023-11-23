@@ -113,7 +113,7 @@ trait InstallsTurboStack
 
     protected function runStorageLinkCommand(): void
     {
-        if ($this->hasComposerPackage('laravel/sail') && file_exists(base_path('docker-compose.yml'))) {
+        if ($this->hasComposerPackage('laravel/sail') && file_exists(base_path('docker-compose.yml')) && ! env('LARAVEL_SAIL', 0)) {
             Process::run([base_path('vendor/bin/sail'), 'up', '-d']);
             Process::run([base_path('vendor/bin/sail'), 'artisan', 'storage:link']);
         } else {

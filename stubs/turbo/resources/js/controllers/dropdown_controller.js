@@ -26,6 +26,11 @@ export default class extends Controller {
         }
     }
 
+    closeNow() {
+        this.contentTarget.classList.add('hidden')
+        this.close()
+    }
+
     // private
 
     openValueChanged() {

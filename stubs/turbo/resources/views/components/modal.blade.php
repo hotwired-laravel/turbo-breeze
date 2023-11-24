@@ -24,6 +24,7 @@ $maxWidth = [
         close->modal#close:stop
         keydown.esc@window->modal#close
         keydown.tab->modal#changeFocus:prevent
+        keydown.shift+tab->modal#changeFocus:prevent
     "
     class="hidden fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50"
 >

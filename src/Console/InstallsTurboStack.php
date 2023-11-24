@@ -18,7 +18,7 @@ trait InstallsTurboStack
     {
         // Install Turbo Laravel, Stimulus Laravel, Importmap Laravel, and TailwindCSS Laravel...
         $packages = array_merge(
-            ['hotwired-laravel/turbo-laravel:2.x-dev', 'hotwired-laravel/stimulus-laravel:^0.3'],
+            ['hotwired-laravel/turbo-laravel:2.x-dev', 'hotwired-laravel/stimulus-laravel:^1.0.0-beta1'],
             $importmaps ? ['tonysm/importmap-laravel:^1.8', 'tonysm/tailwindcss-laravel:^0.11'] : [],
         );
 
@@ -40,7 +40,7 @@ trait InstallsTurboStack
         }
 
         Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'turbo:install']);
-        Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'stimulus:install']);
+        Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'stimulus:install', '--strada']);
 
         // Controllers
         (new Filesystem)->ensureDirectoryExists(app_path('Http'));

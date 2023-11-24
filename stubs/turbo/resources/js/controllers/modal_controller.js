@@ -33,8 +33,15 @@ export default class extends Controller {
             this.prevFocusable.focus()
         } else {
             this.nextFocusable.focus()
-
         }
+    }
+
+    closeNow() {
+        document.body.classList.remove('overflow-y-hidden')
+        this.element.classList.add('hidden')
+        this.overlayTarget.classList.add('hidden')
+        this.contentTarget.classList.add('hidden')
+        this.close()
     }
 
     get focusables() {

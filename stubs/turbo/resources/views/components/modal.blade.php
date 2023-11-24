@@ -20,6 +20,7 @@ $maxWidth = [
     data-modal-open-value="@js($show)"
     data-modal-focusable-value="@js($attributes->has('focusable'))"
     data-action="
+        turbo:before-cache@window->modal#closeNow
         open-modal@window->modal#openWhenIdMatches
         close->modal#close:stop
         keydown.esc@window->modal#close

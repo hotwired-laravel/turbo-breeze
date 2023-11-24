@@ -96,12 +96,25 @@ trait InstallsTurboStack
         if ($importmaps) {
            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:pin', 'el-transition']);
         } else {
+            // NPM Packages...
+            $this->updateNodePackages(function ($packages) {
+                return [
+                    '@tailwindcss/forms' => '^0.5.3',
+                    '@tailwindcss/aspect-ratio' => '^0.4.2',
+                    '@tailwindcss/typography' => '^0.5.10',
+                    'autoprefixer' => '^10.4.12',
+                    'postcss' => '^8.4.18',
+                    'tailwindcss' => '^3.2.1',
+                    'el-transition' => '^0.0.7',
+                ] + $packages;
+            });
+
             if (file_exists(base_path('pnpm-lock.yaml'))) {
-                $this->runCommands(['pnpm install', 'pnpm install el-transition', 'pnpm run build']);
+                $this->runCommands(['pnpm install', 'pnpm run build']);
             } elseif (file_exists(base_path('yarn.lock'))) {
-                $this->runCommands(['yarn install', 'yarn add el-transition', 'yarn run build']);
+                $this->runCommands(['yarn install', 'yarn run build']);
             } else {
-                $this->runCommands(['npm install', 'npm install el-transition', 'npm run build']);
+                $this->runCommands(['npm install', 'npm run build']);
             }
         }
 

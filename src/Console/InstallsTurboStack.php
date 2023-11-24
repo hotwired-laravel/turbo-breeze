@@ -56,8 +56,8 @@ trait InstallsTurboStack
 
         // Views Layouts...
         (new Filesystem)->ensureDirectoryExists(resource_path('views/layouts'));
-        (new Filesystem)->put(resource_path('views/layouts'), str_replace('{SCRIPTS_PLACEHOLDER}', $this->scriptsContent($importmaps), (new Filesystem)->get(__DIR__.'/../../stubs/turbo/resources/views/layouts/app.blade.php')));
-        (new Filesystem)->put(resource_path('views/layouts'), str_replace('{SCRIPTS_PLACEHOLDER}', $this->scriptsContent($importmaps), (new Filesystem)->get(__DIR__.'/../../stubs/turbo/resources/views/layouts/guest.blade.php')));
+        (new Filesystem)->put(resource_path('views/layouts/app.blade.php'), str_replace('{SCRIPTS_PLACEHOLDER}', $this->scriptsContent($importmaps), (new Filesystem)->get(__DIR__.'/../../stubs/turbo/resources/views/layouts/app.blade.php')));
+        (new Filesystem)->put(resource_path('views/layouts/guest.blade.php'), str_replace('{SCRIPTS_PLACEHOLDER}', $this->scriptsContent($importmaps), (new Filesystem)->get(__DIR__.'/../../stubs/turbo/resources/views/layouts/guest.blade.php')));
 
         // Components...
         (new Filesystem)->ensureDirectoryExists(app_path('View/Components'));
@@ -130,16 +130,16 @@ trait InstallsTurboStack
     {
         if ($importmaps) {
             return <<<'BLADE'
-                    <!-- Styles -->
+            <!-- Styles -->
                     <link rel="stylesheets" href="{{ tailwindcss('css/app.css') }}">
 
                     <!-- Scripts -->
-                    <x-importmaps-tags />
+                    <x-importmap-tags />
             BLADE;
         }
 
         return <<<'BLADE'
-                @vite(['resources/js/app.js', 'resources/css/app.css'])
+        @vite(['resources/js/app.js', 'resources/css/app.css'])
         BLADE;
     }
 

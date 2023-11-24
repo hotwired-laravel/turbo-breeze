@@ -6,4 +6,4 @@ const Stimulus = Application.start()
 Stimulus.debug = false
 window.Stimulus = Stimulus
 
-export default Stimulus
+export default { Stimulus }

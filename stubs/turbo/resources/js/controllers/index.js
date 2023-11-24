@@ -1,4 +1,4 @@
-import Stimulus from '../libs/stimulus'
+import { Stimulus } from '../libs/stimulus'
 
 import ResponsiveNav from './responsive_nav_controller'
 Stimulus.register('responsive-nav', ResponsiveNav)
@@ -14,5 +14,3 @@ Stimulus.register('modal', Modal)
 
 import ModalTrigger from './modal_trigger_controller'
 Stimulus.register('modal-trigger', ModalTrigger)
-
-export default Stimulus

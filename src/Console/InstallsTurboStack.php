@@ -131,7 +131,7 @@ trait InstallsTurboStack
         if ($importmaps) {
             return <<<'BLADE'
             <!-- Styles -->
-                    <link rel="stylesheets" href="{{ tailwindcss('css/app.css') }}">
+                    <link rel="stylesheet" href="{{ tailwindcss('css/app.css') }}">
 
                     <!-- Scripts -->
                     <x-importmap-tags />

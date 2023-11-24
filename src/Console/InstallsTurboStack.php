@@ -95,7 +95,8 @@ trait InstallsTurboStack
         copy(__DIR__.'/../../stubs/turbo/resources/css/app.css', resource_path('css/app.css'));
 
         if ($importmaps) {
-           Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:pin', 'el-transition']);
+           Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:unpin', 'axios']);
+           Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:pin', 'el-transition', 'axios@0.27']);
         } else {
             // NPM Packages...
             $this->updateNodePackages(function ($packages) {

@@ -110,6 +110,8 @@ trait InstallsTurboStack
                 ] + $packages;
             });
 
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'stimulus:manifest']);
+
             if (file_exists(base_path('pnpm-lock.yaml'))) {
                 $this->runCommands(['pnpm install', 'pnpm run build']);
             } elseif (file_exists(base_path('yarn.lock'))) {

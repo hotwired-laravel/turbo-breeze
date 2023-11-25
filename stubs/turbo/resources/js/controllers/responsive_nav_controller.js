@@ -1,15 +1,9 @@
 import { Controller } from '@hotwired/stimulus'
 
-// Usage: data-controller="responsive-nav"
+// Usage data-controller="responsive-nav"
 export default class extends Controller {
     static values = {
         open: false,
-    }
-
-    connect() {
-        if (! this.openValue) {
-            this.close()
-        }
     }
 
     open() {
@@ -24,13 +18,9 @@ export default class extends Controller {
         this.openValue = ! this.openValue
     }
 
-    // private
-
-    openValueChanged() {
-        if (this.openValue) {
-            this.element.setAttribute('open', true)
-        } else {
-            this.element.removeAttribute('open')
+    closeWhenClickedOutside(event) {
+        if (! this.element.contains(event.target)) {
+            this.close()
         }
     }
 }

@@ -9,7 +9,7 @@
         </p>
     </header>
 
-    <form method="post" action="{{ route('profile.destroy') }}">
+    <form method="post" action="{{ route('profile.destroy') }}" class="mt-6 space-y-6">
         @csrf
         @method('delete')
 
@@ -19,8 +19,8 @@
             <x-input-error class="mt-2" :messages="$errors->get('password')" />
         </div>
 
-        <div class="mt-6 flex justify-end">
-            <x-danger-button class="ms-3">
+        <div class="flex items-center gap-4">
+            <x-danger-button>
                 {{ __('Delete Account') }}
             </x-danger-button>
         </div>

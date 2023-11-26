@@ -1,0 +1,62 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - main
+      - '*.x'
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  stub-tests:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      fail-fast: true
+      matrix:
+        stack: [turbo, turbo-vite]
+        laravel: [10]
+
+    name: Test Stubs - Laravel ${{ matrix.laravel }} - ${{ matrix.stack }}
+
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          extensions: dom, curl, libxml, mbstring, zip
+          ini-values: error_reporting=E_ALL
+          tools: composer:v2
+          coverage: none
+
+      - name: Setup Laravel
+        run: |
+          composer create-project laravel/laravel:^${{ matrix.laravel }} .
+          composer require hotwired-laravel/turbo-breeze:@dev --no-interaction --no-update
+          composer config repositories.turbo-breeze '{"type": "path", "url": "turbo-breeze"}' --file composer.json
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          path: 'turbo-breeze'
+
+      - name: Install Turbo Breeze
+        run: |
+          composer update "hotwired-laravel/turbo-breeze" --prefer-dist --no-interaction --no-progress -W
+          php artisan turbo-breeze:install ${{ matrix.stack }}
+
+      - name: Install NPM dependencies
+        if: matrix.stack != 'turbo'
+        run: npm i
+
+      - name: Compile assets
+        if: matrix.stack != 'turbo'
+        run: npm run build
+
+      - name: Execute tests
+        run: vendor/bin/pest
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"

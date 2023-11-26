@@ -1,39 +1,32 @@
-<p align="center"><img src="/art/logo.svg" alt="Logo Laravel Breeze"></p>
+<h1 align="center">Turbo Breeze</h1>
 
 <p align="center">
-    <a href="https://packagist.org/packages/laravel/breeze">
-        <img src="https://img.shields.io/packagist/dt/laravel/breeze" alt="Total Downloads">
+    <a href="https://packagist.org/packages/hotwired-laravel/turbo-breeze">
+        <img src="https://img.shields.io/packagist/v/hotwired-laravel/turbo-breeze" alt="Latest Stable Version">
     </a>
-    <a href="https://packagist.org/packages/laravel/breeze">
-        <img src="https://img.shields.io/packagist/v/laravel/breeze" alt="Latest Stable Version">
-    </a>
-    <a href="https://packagist.org/packages/laravel/breeze">
-        <img src="https://img.shields.io/packagist/l/laravel/breeze" alt="License">
+    <a href="https://packagist.org/packages/hotwired-laravel/turbo-breeze">
+        <img src="https://img.shields.io/packagist/l/hotwired-laravel/turbo-breeze" alt="License">
     </a>
 </p>
 
 ## Introduction
 
-Breeze provides a minimal and simple starting point for building a Laravel application with authentication. Styled with Tailwind, Breeze publishes authentication controllers and views to your application that can be easily customized based on your own application's needs.
+Turbo Breeze is a fork of [Laravel Breeze](https://github.com/laravel/breeze). It provides a minimal and simple starting point for building a Hotwired Laravel application with authentication. Styled with Tailwind, Turbo Breeze publishes authentication controllers and views to your application that can be easily customized based on your own application's needs.
 
-Laravel Breeze is powered by Blade and Tailwind. If you're looking for a more robust Laravel starter kit that includes two factor authentication, Livewire / Inertia support, and more, check out [Laravel Jetstream](https://jetstream.laravel.com).
+Turbo Breeze is powered by Blade, Tailwind, [Turbo Laravel](https://github.com/hotwired-laravel/turbo-laravel/), and [Stimulus Laravel](https://github.com/hotwired-laravel/stimulus-laravel). You may install Turbo Breeze using [Importmap Laravel](https://github.com/tonysm/importmap-laravel) and [TailwindCSS Laravel](https://github.com/tonysm/tailwindcss-laravel) for a Node-less setup, but you may also use a Vite-based setup if you prefer that.
 
 ## Official Documentation
 
-Documentation for Breeze can be found on the [Laravel website](https://laravel.com/docs/starter-kits#laravel-breeze).
+Since Turbo Breeze is a fork of Laravel Breeze, most of the documentation of Laravel Breeze works here as well, therefore we're recommending the Breeze documentation, which can be found on the [Laravel website](https://laravel.com/docs/starter-kits#laravel-breeze). For a guided tour, we recommend the [Turbo Laravel Bootcamp](https://turbo-laravel.com/guides/introduction).
 
 ## Contributing
 
 Thank you for considering contributing to Breeze! You can read the contribution guide [here](.github/CONTRIBUTING.md).
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
 ## Security Vulnerabilities
 
-Please review [our security policy](https://github.com/laravel/breeze/security/policy) on how to report security vulnerabilities.
+Please review [our security policy](https://github.com/hotwired-laravel/turbo-breeze/security/policy) on how to report security vulnerabilities.
 
 ## License
 
-Laravel Breeze is open-sourced software licensed under the [MIT license](LICENSE.md).
+Turbo Breeze is open-sourced software licensed under the [MIT license](LICENSE.md).

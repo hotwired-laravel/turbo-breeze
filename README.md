@@ -21,7 +21,7 @@ Since Turbo Breeze is a fork of Laravel Breeze, most of the documentation of Lar
 
 ## Contributing
 
-Thank you for considering contributing to Breeze! You can read the contribution guide [here](.github/CONTRIBUTING.md).
+Thank you for considering contributing to Turbo Breeze! You can read the contribution guide [here](.github/CONTRIBUTING.md).
 
 ## Security Vulnerabilities
 

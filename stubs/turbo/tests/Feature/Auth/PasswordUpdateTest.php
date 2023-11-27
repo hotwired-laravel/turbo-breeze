@@ -9,7 +9,7 @@ test('password can be updated', function () {
     $response = $this
         ->actingAs($user)
         ->from('/profile/password/edit')
-        ->put('/profile/password', [
+        ->patch('/profile/password', [
             'current_password' => 'password',
             'password' => 'new-password',
             'password_confirmation' => 'new-password',
@@ -28,13 +28,13 @@ test('correct password must be provided to update password', function () {
     $response = $this
         ->actingAs($user)
         ->from('/profile/password/edit')
-        ->put('/profile/password', [
+        ->patch('/profile/password', [
             'current_password' => 'wrong-password',
             'password' => 'new-password',
             'password_confirmation' => 'new-password',
         ]);
 
     $response
-        ->assertSessionHasErrorsIn('updatePassword', 'current_password')
+        ->assertSessionHasErrors('current_password')
         ->assertRedirect('/profile/password');
 });

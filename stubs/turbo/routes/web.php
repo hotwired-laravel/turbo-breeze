@@ -26,7 +26,7 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::singleton('profile', ProfileController::class);
 
-    Route::prefix('profile')->group(function () {
+    Route::prefix('profile')->as('profile.')->group(function () {
         Route::singleton('password', ProfilePasswordController::class)->only(['edit', 'update']);
     });
 

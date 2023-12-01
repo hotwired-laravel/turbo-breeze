@@ -12,7 +12,7 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile index menu.
+     * Display the user's profile menu.
      */
     public function show(Request $request): View
     {

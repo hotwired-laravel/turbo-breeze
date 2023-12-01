@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            <x-breadcrumbs :links="[route('profile.index') => __('Profile & Settings'), __('Delete Account')]" />
+            <x-breadcrumbs :links="[route('profile.show') => __('Profile & Settings'), __('Delete Account')]" />
         </h2>
     </x-slot>
 

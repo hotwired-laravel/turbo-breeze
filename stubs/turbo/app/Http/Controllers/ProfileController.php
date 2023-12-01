@@ -14,9 +14,9 @@ class ProfileController extends Controller
     /**
      * Display the user's profile index menu.
      */
-    public function index(Request $request): View
+    public function show(Request $request): View
     {
-        return view('profile.index', [
+        return view('profile.show', [
             'user' => $request->user(),
         ]);
     }

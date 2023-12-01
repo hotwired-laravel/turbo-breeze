@@ -12,11 +12,11 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile index menu.
+     * Display the user's profile menu.
      */
-    public function index(Request $request): View
+    public function show(Request $request): View
     {
-        return view('profile.index', [
+        return view('profile.show', [
             'user' => $request->user(),
         ]);
     }

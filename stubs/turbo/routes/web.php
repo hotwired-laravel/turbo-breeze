@@ -24,14 +24,13 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::singleton('profile', ProfileController::class);
-
     Route::prefix('profile')->as('profile.')->group(function () {
         Route::singleton('password', ProfilePasswordController::class)->only(['edit', 'update']);
+        Route::get('/delete', [ProfileController::class, 'delete'])->name('delete');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
     });
 
-    Route::get('/profile/delete', [ProfileController::class, 'delete'])->name('profile.delete');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::singleton('profile', ProfileController::class);
 });
 
 require __DIR__.'/auth.php';

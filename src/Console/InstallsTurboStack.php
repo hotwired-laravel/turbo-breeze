@@ -139,7 +139,7 @@ trait InstallsTurboStack
                     <link rel="stylesheet" href="{{ tailwindcss('css/app.css') }}">
 
                     <!-- Scripts -->
-                    <x-importmap-tags />
+                    <x-importmap::tags />
             BLADE;
         }
 

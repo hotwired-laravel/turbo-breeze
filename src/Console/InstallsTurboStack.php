@@ -30,6 +30,9 @@ trait InstallsTurboStack
         (new Filesystem)->ensureDirectoryExists(resource_path('js/controllers'));
         (new Filesystem)->ensureDirectoryExists(resource_path('js/libs'));
 
+        // Remove the bootstrap.js file (it only has axios)...
+        (new Filesystem)->delete(resource_path('js/bootstrap.js'));
+
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/controllers', resource_path('js/controllers'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/libs', resource_path('js/libs'));
 
@@ -63,11 +66,6 @@ trait InstallsTurboStack
             );
         }
 
-        // Tests...
-        if (! $this->installTests()) {
-            return 1;
-        }
-
         // Routes...
         copy(__DIR__.'/../../stubs/turbo/routes/web.php', base_path('routes/web.php'));
         copy(__DIR__.'/../../stubs/turbo/routes/auth.php', base_path('routes/auth.php'));
@@ -94,10 +92,7 @@ trait InstallsTurboStack
         Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'turbo:install']);
         Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'stimulus:install', '--strada']);
 
-        if ($importmaps) {
-           Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:unpin', 'axios']);
-           Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:pin', 'el-transition', 'axios@0.27']);
-        } else {
+        if (! $importmaps) {
             // NPM Packages...
             $this->updateNodePackages(function ($packages) {
                 return [
@@ -126,7 +121,11 @@ trait InstallsTurboStack
             $this->runStorageLinkCommand();
         }
 
+        // Tests...
+        $this->installTests();
+
         $this->components->info('Breeze scaffolding installed successfully.');
+
     }
 
     protected function scriptsContent(bool $importmaps): string

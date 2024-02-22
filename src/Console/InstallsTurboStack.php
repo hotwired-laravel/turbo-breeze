@@ -77,21 +77,19 @@ trait InstallsTurboStack
         $this->replaceInFile('Home', 'Dashboard', resource_path('views/welcome.blade.php'));
         $this->replaceInFile('/home', '/dashboard', app_path('Providers/RouteServiceProvider.php'));
 
-        // Vite stuff...
         if (! $importmaps) {
+            // Vite stuff...
             copy(__DIR__.'/../../stubs/turbo/postcss.config.js', base_path('postcss.config.js'));
             copy(__DIR__.'/../../stubs/turbo/vite.config.js', base_path('vite.config.js'));
+        } else {
+            // Install Packages...
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']);
         }
 
         // TailwindCSS...
         copy(__DIR__.'/../../stubs/turbo/tailwind.config.js', base_path('tailwind.config.js'));
         copy(__DIR__.'/../../stubs/turbo/resources/css/app.css', resource_path('css/app.css'));
-
-        // Install Packages...
-        if ($importmaps) {
-            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
-            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']);
-        }
 
         Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'turbo:install']);
         Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'stimulus:install', '--strada']);

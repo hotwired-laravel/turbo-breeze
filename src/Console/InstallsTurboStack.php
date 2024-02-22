@@ -30,9 +30,6 @@ trait InstallsTurboStack
         (new Filesystem)->ensureDirectoryExists(resource_path('js/controllers'));
         (new Filesystem)->ensureDirectoryExists(resource_path('js/libs'));
 
-        // Remove the bootstrap.js file (it only has axios)...
-        (new Filesystem)->delete(resource_path('js/bootstrap.js'));
-
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/controllers', resource_path('js/controllers'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/libs', resource_path('js/libs'));
 

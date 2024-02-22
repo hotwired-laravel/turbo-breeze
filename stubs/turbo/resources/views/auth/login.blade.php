@@ -1,4 +1,8 @@
 <x-guest-layout>
+    <x-slot name="meta">
+        <x-turbo::page-requires-reload />
+    </x-slot>
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

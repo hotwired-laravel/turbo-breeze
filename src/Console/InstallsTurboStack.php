@@ -19,7 +19,7 @@ trait InstallsTurboStack
         // Install Turbo Laravel, Stimulus Laravel, Importmap Laravel, and TailwindCSS Laravel...
         $packages = array_merge(
             ['hotwired-laravel/turbo-laravel:^2.0.0-beta3', 'hotwired-laravel/stimulus-laravel:^1.0.0'],
-            $importmaps ? ['tonysm/importmap-laravel:^2.0.0', 'tonysm/tailwindcss-laravel:^0.12'] : [],
+            $importmaps ? ['tonysm/importmap-laravel:^2.0.0', 'tonysm/tailwindcss-laravel:^0.13'] : [],
         );
 
         if (! $this->requireComposerPackages($packages)) {
@@ -78,8 +78,8 @@ trait InstallsTurboStack
             copy(__DIR__.'/../../stubs/turbo/vite.config.js', base_path('vite.config.js'));
         } else {
             // Install Packages...
-            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
             Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']);
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
         }
 
         // TailwindCSS...
@@ -129,9 +129,6 @@ trait InstallsTurboStack
     {
         if ($importmaps) {
             return <<<'BLADE'
-            <!-- Styles -->
-                    <link rel="stylesheet" href="{{ tailwindcss('css/app.css') }}">
-
                     <!-- Scripts -->
                     <x-importmap::tags />
             BLADE;

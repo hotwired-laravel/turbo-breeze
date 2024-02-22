@@ -128,10 +128,7 @@ trait InstallsTurboStack
     protected function scriptsContent(bool $importmaps): string
     {
         if ($importmaps) {
-            return <<<'BLADE'
-                    <!-- Scripts -->
-                    <x-importmap::tags />
-            BLADE;
+            return '';
         }
 
         return <<<'BLADE'

@@ -19,7 +19,7 @@ trait InstallsTurboStack
         // Install Turbo Laravel, Stimulus Laravel, Importmap Laravel, and TailwindCSS Laravel...
         $packages = array_merge(
             ['hotwired-laravel/turbo-laravel:^2.0.0-beta3', 'hotwired-laravel/stimulus-laravel:^1.0.0'],
-            $importmaps ? ['tonysm/importmap-laravel:^2.1.2', 'tonysm/tailwindcss-laravel:^0.13'] : [],
+            $importmaps ? ['tonysm/importmap-laravel:^2.1.3', 'tonysm/tailwindcss-laravel:^0.13'] : [],
         );
 
         if (! $this->requireComposerPackages($packages)) {
@@ -46,13 +46,6 @@ trait InstallsTurboStack
         // Views...
         (new Filesystem)->ensureDirectoryExists(resource_path('views'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/views', resource_path('views'));
-
-        // Views Components...
-        (new Filesystem)->ensureDirectoryExists(resource_path('views/components'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/views/components', resource_path('views/components'));
-
-        // Views Layouts...
-        (new Filesystem)->ensureDirectoryExists(resource_path('views/layouts'));
 
         // Components...
         (new Filesystem)->ensureDirectoryExists(app_path('View/Components'));

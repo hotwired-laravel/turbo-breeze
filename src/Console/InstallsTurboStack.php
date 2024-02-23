@@ -30,6 +30,12 @@ trait InstallsTurboStack
         (new Filesystem)->ensureDirectoryExists(resource_path('js/controllers'));
         (new Filesystem)->ensureDirectoryExists(resource_path('js/libs'));
 
+        $bootstrap = $importmaps
+            ? __DIR__.'/../../stubs/turbo/resources/js/bootstrap-importmap.js'
+            : __DIR__.'/../../stubs/turbo/resources/js/bootstrap-vite.js'
+
+        (new Filesystem)->copy(__DIR__.'/../../stubs/turbo/resources/js/app.js', resource_path('js/app.js'));
+        (new Filesystem)->copy($bootstrap, resource_path('js/app.js'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/controllers', resource_path('js/controllers'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/libs', resource_path('js/libs'));
 
@@ -110,9 +116,9 @@ trait InstallsTurboStack
             } else {
                 $this->runCommands(['npm install', 'npm run build']);
             }
-        }
+        } else {
+            Process::run([$this->phpBinary(), 'artisan', 'importmap:unpin', 'axios']);
 
-        if ($importmaps) {
             $this->runStorageLinkCommand();
         }
 

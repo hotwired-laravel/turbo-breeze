@@ -4,7 +4,6 @@ namespace HotwiredLaravel\TurboBreeze\Console;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Process;
-use Illuminate\Support\Sleep;
 use Symfony\Component\Finder\Finder;
 
 trait InstallsTurboStack
@@ -89,8 +88,8 @@ trait InstallsTurboStack
             });
 
             // Install Importmap Packages...
-            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']);
-            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
+            $this->output->writeln(Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']));
+            $this->output->writeln(Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']));
         }
 
         // Install Hotwired Laravel Packages...

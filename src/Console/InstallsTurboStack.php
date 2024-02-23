@@ -81,6 +81,15 @@ trait InstallsTurboStack
             copy(__DIR__.'/../../stubs/turbo/postcss.config.js', base_path('postcss.config.js'));
             copy(__DIR__.'/../../stubs/turbo/vite.config.js', base_path('vite.config.js'));
         } else {
+            // Remove axios...
+            $this->updateNodePackages(function ($packages) {
+                if ($packages['axios'] ?? false) {
+                    unset($packages['axios']);
+                }
+
+                return $packages;
+            });
+
             // Install Packages...
             Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
             Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']);
@@ -117,8 +126,6 @@ trait InstallsTurboStack
                 $this->runCommands(['npm install', 'npm run build']);
             }
         } else {
-            Process::run([$this->phpBinary(), 'artisan', 'importmap:unpin', 'axios', 'buffer', '#lib/defaults/env/FormData.js']);
-
             $this->runStorageLinkCommand();
         }
 

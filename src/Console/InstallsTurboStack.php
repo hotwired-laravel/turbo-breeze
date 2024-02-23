@@ -47,8 +47,6 @@ trait InstallsTurboStack
 
         // Views Layouts...
         (new Filesystem)->ensureDirectoryExists(resource_path('views/layouts'));
-        (new Filesystem)->put(resource_path('views/layouts/app.blade.php'), str_replace('{SCRIPTS_PLACEHOLDER}', $this->scriptsContent($importmaps), (new Filesystem)->get(__DIR__.'/../../stubs/turbo/resources/views/layouts/app.blade.php')));
-        (new Filesystem)->put(resource_path('views/layouts/guest.blade.php'), str_replace('{SCRIPTS_PLACEHOLDER}', $this->scriptsContent($importmaps), (new Filesystem)->get(__DIR__.'/../../stubs/turbo/resources/views/layouts/guest.blade.php')));
 
         // Components...
         (new Filesystem)->ensureDirectoryExists(app_path('View/Components'));
@@ -78,8 +76,8 @@ trait InstallsTurboStack
             copy(__DIR__.'/../../stubs/turbo/vite.config.js', base_path('vite.config.js'));
         } else {
             // Install Packages...
-            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']);
             Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']);
         }
 
         // TailwindCSS...
@@ -123,17 +121,6 @@ trait InstallsTurboStack
 
         $this->components->info('Breeze scaffolding installed successfully.');
 
-    }
-
-    protected function scriptsContent(bool $importmaps): string
-    {
-        if ($importmaps) {
-            return '';
-        }
-
-        return <<<'BLADE'
-        @vite(['resources/js/app.js', 'resources/css/app.css'])
-        BLADE;
     }
 
     protected function runStorageLinkCommand(): void

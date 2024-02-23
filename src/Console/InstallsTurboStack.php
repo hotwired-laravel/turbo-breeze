@@ -35,7 +35,7 @@ trait InstallsTurboStack
             : __DIR__.'/../../stubs/turbo/resources/js/bootstrap-vite.js'
 
         (new Filesystem)->copy(__DIR__.'/../../stubs/turbo/resources/js/app.js', resource_path('js/app.js'));
-        (new Filesystem)->copy($bootstrap, resource_path('js/app.js'));
+        (new Filesystem)->copy($bootstrap, resource_path('js/bootstrap.js'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/controllers', resource_path('js/controllers'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/libs', resource_path('js/libs'));
 
@@ -117,7 +117,7 @@ trait InstallsTurboStack
                 $this->runCommands(['npm install', 'npm run build']);
             }
         } else {
-            Process::run([$this->phpBinary(), 'artisan', 'importmap:unpin', 'axios']);
+            Process::run([$this->phpBinary(), 'artisan', 'importmap:unpin', 'axios', 'buffer', '#lib/defaults/env/FormData.js']);
 
             $this->runStorageLinkCommand();
         }

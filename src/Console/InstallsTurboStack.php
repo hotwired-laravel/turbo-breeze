@@ -89,6 +89,7 @@ trait InstallsTurboStack
 
             // Install Importmap Packages...
             Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:pin', 'el-transition']);
             Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']);
         }
 

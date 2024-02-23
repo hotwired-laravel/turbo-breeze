@@ -70,6 +70,10 @@ trait InstallsTurboStack
         $this->replaceInFile('Home', 'Dashboard', resource_path('views/welcome.blade.php'));
         $this->replaceInFile('/home', '/dashboard', app_path('Providers/RouteServiceProvider.php'));
 
+        // TailwindCSS...
+        copy(__DIR__.'/../../stubs/turbo/tailwind.config.js', base_path('tailwind.config.js'));
+        copy(__DIR__.'/../../stubs/turbo/resources/css/app.css', resource_path('css/app.css'));
+
         if (! $importmaps) {
             // Vite stuff...
             copy(__DIR__.'/../../stubs/turbo/postcss.config.js', base_path('postcss.config.js'));
@@ -84,17 +88,12 @@ trait InstallsTurboStack
                 return $packages;
             });
 
-            // Install Packages...
-            $this->components->info('Running importmap:install.');
-            Sleep::for(300)->milliseconds();
-            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
+            // Install Importmap Packages...
             Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']);
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
         }
 
-        // TailwindCSS...
-        copy(__DIR__.'/../../stubs/turbo/tailwind.config.js', base_path('tailwind.config.js'));
-        copy(__DIR__.'/../../stubs/turbo/resources/css/app.css', resource_path('css/app.css'));
-
+        // Install Hotwired Laravel Packages...
         Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'turbo:install']);
         Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'stimulus:install', '--strada']);
 

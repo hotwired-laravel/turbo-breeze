@@ -19,7 +19,7 @@ trait InstallsTurboStack
         // Install Turbo Laravel, Stimulus Laravel, Importmap Laravel, and TailwindCSS Laravel...
         $packages = array_merge(
             ['hotwired-laravel/turbo-laravel:^2.0.0-beta3', 'hotwired-laravel/stimulus-laravel:^1.0.0'],
-            $importmaps ? ['tonysm/importmap-laravel:^2.0.0', 'tonysm/tailwindcss-laravel:^0.13'] : [],
+            $importmaps ? ['tonysm/importmap-laravel:^2.1.2', 'tonysm/tailwindcss-laravel:^0.13'] : [],
         );
 
         if (! $this->requireComposerPackages($packages)) {

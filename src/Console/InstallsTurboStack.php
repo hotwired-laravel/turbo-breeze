@@ -88,8 +88,8 @@ trait InstallsTurboStack
             });
 
             // Install Importmap Packages...
-            $this->output->writeln(Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']));
-            $this->output->writeln(Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']));
+            $this->output->writeln(Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install'])->output());
+            $this->output->writeln(Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install'])->output());
         }
 
         // Install Hotwired Laravel Packages...

@@ -18,8 +18,8 @@ trait InstallsTurboStack
     {
         // Install Turbo Laravel, Stimulus Laravel, Importmap Laravel, and TailwindCSS Laravel...
         $packages = array_merge(
-            ['hotwired-laravel/turbo-laravel:^2.0.0-beta3', 'hotwired-laravel/stimulus-laravel:^1.0.0'],
-            $importmaps ? ['tonysm/importmap-laravel:^2.0.0', 'tonysm/tailwindcss-laravel:^0.12'] : [],
+            ['hotwired-laravel/turbo-laravel:^2.0.0-beta4', 'hotwired-laravel/stimulus-laravel:^1.1'],
+            $importmaps ? ['tonysm/importmap-laravel:^2.2', 'tonysm/tailwindcss-laravel:^0.14'] : [],
         );
 
         if (! $this->requireComposerPackages($packages)) {
@@ -70,7 +70,6 @@ trait InstallsTurboStack
         // "Dashboard" Route...
         $this->replaceInFile('/home', '/dashboard', resource_path('views/welcome.blade.php'));
         $this->replaceInFile('Home', 'Dashboard', resource_path('views/welcome.blade.php'));
-        $this->replaceInFile('/home', '/dashboard', app_path('Providers/RouteServiceProvider.php'));
 
         if (! $importmaps) {
             // Vite stuff...
@@ -78,16 +77,24 @@ trait InstallsTurboStack
             copy(__DIR__.'/../../stubs/turbo/vite.config.js', base_path('vite.config.js'));
         } else {
             // Install Packages...
-            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install']);
-            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install']);
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:install'], function ($_type, $output) {
+                $this->output->write($output);
+            });
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install'], function ($_type, $output) {
+                $this->output->write($output);
+            });
         }
 
         // TailwindCSS...
         copy(__DIR__.'/../../stubs/turbo/tailwind.config.js', base_path('tailwind.config.js'));
         copy(__DIR__.'/../../stubs/turbo/resources/css/app.css', resource_path('css/app.css'));
 
-        Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'turbo:install']);
-        Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'stimulus:install', '--strada']);
+        Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'turbo:install'], function ($_type, $output) {
+            $this->output->write($output);
+        });
+        Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'stimulus:install', '--strada'], function ($_type, $output) {
+            $this->output->write($output);
+        });
 
         if (! $importmaps) {
             // NPM Packages...
@@ -103,7 +110,11 @@ trait InstallsTurboStack
                 ] + $packages;
             });
 
-            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'stimulus:manifest']);
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'stimulus:manifest'], function ($_type, $output) {
+                $this->output->write($output);
+            });
+
+            $this->components->info('Installing and building Node dependencies.');
 
             if (file_exists(base_path('pnpm-lock.yaml'))) {
                 $this->runCommands(['pnpm install', 'pnpm run build']);
@@ -122,7 +133,6 @@ trait InstallsTurboStack
         $this->installTests();
 
         $this->components->info('Breeze scaffolding installed successfully.');
-
     }
 
     protected function scriptsContent(bool $importmaps): string
@@ -145,10 +155,16 @@ trait InstallsTurboStack
     protected function runStorageLinkCommand(): void
     {
         if ($this->hasComposerPackage('laravel/sail') && file_exists(base_path('docker-compose.yml')) && ! env('LARAVEL_SAIL', 0)) {
-            Process::run([base_path('vendor/bin/sail'), 'up', '-d']);
-            Process::run([base_path('vendor/bin/sail'), 'artisan', 'storage:link']);
+            Process::run([base_path('vendor/bin/sail'), 'up', '-d'], function ($_type, $output) {
+                $this->output->write($output);
+            });
+            Process::run([base_path('vendor/bin/sail'), 'artisan', 'storage:link'], function ($_type, $output) {
+                $this->output->write($output);
+            });
         } else {
-            Process::run([$this->phpBinary(), 'artisan', 'storage:link']);
+            Process::run([$this->phpBinary(), 'artisan', 'storage:link'], function ($_type, $output) {
+                $this->output->write($output);
+            });
         }
     }
 }

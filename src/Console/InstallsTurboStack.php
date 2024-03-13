@@ -135,7 +135,7 @@ trait InstallsTurboStack
         // Tests...
         $this->installTests();
 
-        $this->components->info('Breeze scaffolding installed successfully.');
+        $this->components->info('Turbo Breeze scaffolding installed successfully.');
     }
 
     protected function scriptsContent(bool $importmaps): string

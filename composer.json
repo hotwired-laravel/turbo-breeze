@@ -1,7 +1,7 @@
 {
     "name": "hotwired-laravel/turbo-breeze",
     "description": "Minimal Laravel authentication scaffolding with Turbo.",
-    "keywords": ["laravel", "auth", "hotwired", "turbo"],
+    "keywords": ["laravel", "auth", "hotwired", "turbo", "breeze"],
     "license": "MIT",
     "support": {
         "issues": "https://github.com/hotwired-laravel/turbo-breeze/issues",
@@ -14,11 +14,15 @@
         }
     ],
     "require": {
-        "php": "^8.1.0",
-        "illuminate/console": "^10.17",
-        "illuminate/filesystem": "^10.17",
-        "illuminate/support": "^10.17",
-        "illuminate/validation": "^10.17"
+        "php": "^8.1||^8.2",
+        "illuminate/console": "^10.17||^11.0",
+        "illuminate/filesystem": "^10.17||^11.0",
+        "illuminate/support": "^10.17||^11.0",
+        "illuminate/validation": "^10.17||^11.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0||^9.0",
+        "phpstan/phpstan": "^1.10"
     },
     "autoload": {
         "psr-4": {
@@ -39,9 +43,5 @@
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "require-dev": {
-        "orchestra/testbench": "^8.0",
-        "phpstan/phpstan": "^1.10"
-    }
+    "prefer-stable": true
 }

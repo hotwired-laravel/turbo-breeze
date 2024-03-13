@@ -5,7 +5,6 @@ namespace HotwiredLaravel\TurboBreeze\Console;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
 use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -79,36 +78,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
         (new Filesystem)->copy(__DIR__.'/../../stubs/turbo/tests/Pest.php', base_path('tests/Pest.php'));
 
         return true;
-    }
-
-    /**
-     * Install the middleware to a group in the application Http Kernel.
-     *
-     * @param  string  $after
-     * @param  string  $name
-     * @param  string  $group
-     * @return void
-     */
-    protected function installMiddlewareAfter($after, $name, $group = 'web')
-    {
-        $httpKernel = file_get_contents(app_path('Http/Kernel.php'));
-
-        $middlewareGroups = Str::before(Str::after($httpKernel, '$middlewareGroups = ['), '];');
-        $middlewareGroup = Str::before(Str::after($middlewareGroups, "'$group' => ["), '],');
-
-        if (! Str::contains($middlewareGroup, $name)) {
-            $modifiedMiddlewareGroup = str_replace(
-                $after.',',
-                $after.','.PHP_EOL.'            '.$name.',',
-                $middlewareGroup,
-            );
-
-            file_put_contents(app_path('Http/Kernel.php'), str_replace(
-                $middlewareGroups,
-                str_replace($middlewareGroup, $modifiedMiddlewareGroup, $middlewareGroups),
-                $httpKernel
-            ));
-        }
     }
 
     /**

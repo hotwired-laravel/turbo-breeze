@@ -30,8 +30,7 @@ trait InstallsTurboStack
         (new Filesystem)->ensureDirectoryExists(resource_path('js/controllers'));
         (new Filesystem)->ensureDirectoryExists(resource_path('js/libs'));
 
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/controllers', resource_path('js/controllers'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/libs', resource_path('js/libs'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/', resource_path('js/'));
 
         // Controllers
         (new Filesystem)->ensureDirectoryExists(app_path('Http'));

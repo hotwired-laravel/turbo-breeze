@@ -128,6 +128,9 @@ trait InstallsTurboStack
         }
 
         if ($importmaps) {
+            Process::forever()->path(base_path())->run([$this->phpBinary(), 'artisan', 'importmap:pin', 'el-transition'], function ($_type, $output) {
+                $this->output->write($output);
+            });
             $this->runStorageLinkCommand();
         }
 

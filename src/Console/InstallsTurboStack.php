@@ -70,6 +70,9 @@ trait InstallsTurboStack
         // "Dashboard" Route...
         $this->replaceInFile('/home', '/dashboard', resource_path('views/welcome.blade.php'));
         $this->replaceInFile('Home', 'Dashboard', resource_path('views/welcome.blade.php'));
+        if (file_exists(app_path('Providers/RouteServiceProvider.php'))) {
+            $this->replaceInFile('/home', '/dashboard', app_path('Providers/RouteServiceProvider.php'));
+        }
 
         if (! $importmaps) {
             // Vite stuff...

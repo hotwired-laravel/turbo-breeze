@@ -11,15 +11,14 @@ trait InstallsTurboStack
     /**
      * Install the Turbo Breeze stack.
      *
-     * @param bool $importmaps
      * @return int|null
      */
     protected function installTurboStack(bool $importmaps = true)
     {
         // Install Turbo Laravel, Stimulus Laravel, Importmap Laravel, and TailwindCSS Laravel...
         $packages = array_merge(
-            ['hotwired-laravel/turbo-laravel:^2.0.0-beta4', 'hotwired-laravel/stimulus-laravel:^1.1'],
-            $importmaps ? ['tonysm/importmap-laravel:^2.3', 'tonysm/tailwindcss-laravel:^0.14'] : [],
+            ['hotwired-laravel/turbo-laravel:^2.0.1', 'hotwired-laravel/stimulus-laravel:^1.1'],
+            $importmaps ? ['tonysm/importmap-laravel:^2.3', 'tonysm/tailwindcss-laravel:^1.0'] : [],
         );
 
         if (! $this->requireComposerPackages($packages)) {

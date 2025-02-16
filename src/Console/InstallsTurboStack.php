@@ -3,6 +3,7 @@
 namespace HotwiredLaravel\TurboBreeze\Console;
 
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 use Symfony\Component\Finder\Finder;
 
@@ -29,28 +30,28 @@ trait InstallsTurboStack
         (new Filesystem)->ensureDirectoryExists(resource_path('js/controllers'));
         (new Filesystem)->ensureDirectoryExists(resource_path('js/libs'));
 
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/js/', resource_path('js/'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/turbo/resources/js/', resource_path('js/'));
 
         // Controllers
         (new Filesystem)->ensureDirectoryExists(app_path('Http'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/app/Http', app_path('Http'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/turbo/app/Http', app_path('Http'));
 
         // Views...
         (new Filesystem)->ensureDirectoryExists(resource_path('views'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/views', resource_path('views'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/turbo/resources/views', resource_path('views'));
 
         // Views Components...
         (new Filesystem)->ensureDirectoryExists(resource_path('views/components'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/resources/views/components', resource_path('views/components'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/turbo/resources/views/components', resource_path('views/components'));
 
         // Views Layouts...
         (new Filesystem)->ensureDirectoryExists(resource_path('views/layouts'));
-        (new Filesystem)->put(resource_path('views/layouts/app.blade.php'), str_replace('{SCRIPTS_PLACEHOLDER}', $this->scriptsContent($importmaps), (new Filesystem)->get(__DIR__.'/../../stubs/turbo/resources/views/layouts/app.blade.php')));
-        (new Filesystem)->put(resource_path('views/layouts/guest.blade.php'), str_replace('{SCRIPTS_PLACEHOLDER}', $this->scriptsContent($importmaps), (new Filesystem)->get(__DIR__.'/../../stubs/turbo/resources/views/layouts/guest.blade.php')));
+        (new Filesystem)->put(resource_path('views/layouts/app.blade.php'), str_replace('{SCRIPTS_PLACEHOLDER}', $this->scriptsContent($importmaps), (new Filesystem)->get(__DIR__ . '/../../stubs/turbo/resources/views/layouts/app.blade.php')));
+        (new Filesystem)->put(resource_path('views/layouts/guest.blade.php'), str_replace('{SCRIPTS_PLACEHOLDER}', $this->scriptsContent($importmaps), (new Filesystem)->get(__DIR__ . '/../../stubs/turbo/resources/views/layouts/guest.blade.php')));
 
         // Components...
         (new Filesystem)->ensureDirectoryExists(app_path('View/Components'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/app/View/Components', app_path('View/Components'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/turbo/app/View/Components', app_path('View/Components'));
 
         // Dark mode...
         if (! $this->option('dark')) {
@@ -62,8 +63,8 @@ trait InstallsTurboStack
         }
 
         // Routes...
-        copy(__DIR__.'/../../stubs/turbo/routes/web.php', base_path('routes/web.php'));
-        copy(__DIR__.'/../../stubs/turbo/routes/auth.php', base_path('routes/auth.php'));
+        copy(__DIR__ . '/../../stubs/turbo/routes/web.php', base_path('routes/web.php'));
+        copy(__DIR__ . '/../../stubs/turbo/routes/auth.php', base_path('routes/auth.php'));
 
         // "Dashboard" Route...
         $this->replaceInFile('/home', '/dashboard', resource_path('views/welcome.blade.php'));
@@ -74,8 +75,8 @@ trait InstallsTurboStack
 
         if (! $importmaps) {
             // Vite stuff...
-            copy(__DIR__.'/../../stubs/turbo/postcss.config.js', base_path('postcss.config.js'));
-            copy(__DIR__.'/../../stubs/turbo/vite.config.js', base_path('vite.config.js'));
+            copy(__DIR__ . '/../../stubs/turbo/postcss.config.js', base_path('postcss.config.js'));
+            copy(__DIR__ . '/../../stubs/turbo/vite.config.js', base_path('vite.config.js'));
         } else {
             // Install Packages...
             Process::forever()->path(base_path())->tty(PHP_OS != 'WINNT' && is_writable('/dev/tty'))->run([$this->phpBinary(), 'artisan', 'importmap:install'], function ($_type, $output) {
@@ -84,11 +85,14 @@ trait InstallsTurboStack
             Process::forever()->path(base_path())->tty(PHP_OS != 'WINNT' && is_writable('/dev/tty'))->run([$this->phpBinary(), 'artisan', 'tailwindcss:install'], function ($_type, $output) {
                 $this->output->write($output);
             });
+
+            File::replaceInFile('npm run dev', 'php artisan tailwindcss:watch', base_path('composer.json'));
+            File::replaceInFile('vite', 'tailwind', base_path('composer.json'));
         }
 
         // TailwindCSS...
-        copy(__DIR__.'/../../stubs/turbo/tailwind.config.js', base_path('tailwind.config.js'));
-        copy(__DIR__.'/../../stubs/turbo/resources/css/app.css', resource_path('css/app.css'));
+        copy(__DIR__ . '/../../stubs/turbo/tailwind.config.js', base_path('tailwind.config.js'));
+        copy(__DIR__ . '/../../stubs/turbo/resources/css/app.css', resource_path('css/app.css'));
 
         Process::forever()->path(base_path())->tty(PHP_OS != 'WINNT' && is_writable('/dev/tty'))->run([$this->phpBinary(), 'artisan', 'turbo:install'], function ($_type, $output) {
             $this->output->write($output);

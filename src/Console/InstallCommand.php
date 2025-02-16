@@ -36,6 +36,50 @@ class InstallCommand extends Command implements PromptsForMissingInput
     protected $description = 'Install the Breeze controllers and resources';
 
     /**
+     * Update the "package.json" file.
+     *
+     * @param  bool  $dev
+     * @return void
+     */
+    protected static function updateNodePackages(callable $callback, $dev = true)
+    {
+        if (! file_exists(base_path('package.json'))) {
+            return;
+        }
+
+        $configurationKey = $dev ? 'devDependencies' : 'dependencies';
+
+        $packages = json_decode(file_get_contents(base_path('package.json')), true);
+
+        $packages[$configurationKey] = $callback(
+            array_key_exists($configurationKey, $packages) ? $packages[$configurationKey] : [],
+            $configurationKey
+        );
+
+        ksort($packages[$configurationKey]);
+
+        file_put_contents(
+            base_path('package.json'),
+            json_encode($packages, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . PHP_EOL
+        );
+    }
+
+    /**
+     * Delete the "node_modules" directory and remove the associated lock files.
+     *
+     * @return void
+     */
+    protected static function flushNodeModules()
+    {
+        tap(new Filesystem, function ($files) {
+            $files->deleteDirectory(base_path('node_modules'));
+
+            $files->delete(base_path('yarn.lock'));
+            $files->delete(base_path('package-lock.json'));
+        });
+    }
+
+    /**
      * Execute the console command.
      *
      * @return int|null
@@ -69,13 +113,13 @@ class InstallCommand extends Command implements PromptsForMissingInput
             $this->removeComposerPackages(['phpunit/phpunit'], true);
         }
 
-        if (! $this->requireComposerPackages(['pestphp/pest:^2.0', 'pestphp/pest-plugin-laravel:^2.0'], true)) {
+        if (! $this->requireComposerPackages(['pestphp/pest', 'pestphp/pest-plugin-laravel'], true)) {
             return false;
         }
 
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/tests/Feature', base_path('tests/Feature'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/turbo/tests/Unit', base_path('tests/Unit'));
-        (new Filesystem)->copy(__DIR__.'/../../stubs/turbo/tests/Pest.php', base_path('tests/Pest.php'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/turbo/tests/Feature', base_path('tests/Feature'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/turbo/tests/Unit', base_path('tests/Unit'));
+        (new Filesystem)->copy(__DIR__ . '/../../stubs/turbo/tests/Pest.php', base_path('tests/Pest.php'));
 
         return true;
     }
@@ -97,7 +141,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
     /**
      * Installs the given Composer Packages into the application.
      *
-     * @param  array  $packages
      * @param  bool  $asDev
      * @return bool
      */
@@ -125,7 +168,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
     /**
      * Removes the given Composer Packages from the application.
      *
-     * @param  array  $packages
      * @param  bool  $asDev
      * @return bool
      */
@@ -151,51 +193,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
     }
 
     /**
-     * Update the "package.json" file.
-     *
-     * @param  callable  $callback
-     * @param  bool  $dev
-     * @return void
-     */
-    protected static function updateNodePackages(callable $callback, $dev = true)
-    {
-        if (! file_exists(base_path('package.json'))) {
-            return;
-        }
-
-        $configurationKey = $dev ? 'devDependencies' : 'dependencies';
-
-        $packages = json_decode(file_get_contents(base_path('package.json')), true);
-
-        $packages[$configurationKey] = $callback(
-            array_key_exists($configurationKey, $packages) ? $packages[$configurationKey] : [],
-            $configurationKey
-        );
-
-        ksort($packages[$configurationKey]);
-
-        file_put_contents(
-            base_path('package.json'),
-            json_encode($packages, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT).PHP_EOL
-        );
-    }
-
-    /**
-     * Delete the "node_modules" directory and remove the associated lock files.
-     *
-     * @return void
-     */
-    protected static function flushNodeModules()
-    {
-        tap(new Filesystem, function ($files) {
-            $files->deleteDirectory(base_path('node_modules'));
-
-            $files->delete(base_path('yarn.lock'));
-            $files->delete(base_path('package-lock.json'));
-        });
-    }
-
-    /**
      * Replace a given string within a given file.
      *
      * @param  string  $search
@@ -215,7 +212,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
      */
     protected function phpBinary()
     {
-        return (new PhpExecutableFinder())->find(false) ?: 'php';
+        return (new PhpExecutableFinder)->find(false) ?: 'php';
     }
 
     /**
@@ -232,19 +229,18 @@ class InstallCommand extends Command implements PromptsForMissingInput
             try {
                 $process->setTty(true);
             } catch (RuntimeException $e) {
-                $this->output->writeln('  <bg=yellow;fg=black> WARN </> '.$e->getMessage().PHP_EOL);
+                $this->output->writeln('  <bg=yellow;fg=black> WARN </> ' . $e->getMessage() . PHP_EOL);
             }
         }
 
         $process->run(function ($type, $line) {
-            $this->output->write('    '.$line);
+            $this->output->write('    ' . $line);
         });
     }
 
     /**
      * Remove Tailwind dark classes from the given files.
      *
-     * @param  \Symfony\Component\Finder\Finder  $finder
      * @return void
      */
     protected function removeDarkClasses(Finder $finder)
@@ -276,8 +272,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
     /**
      * Interact further with the user if they were prompted for missing arguments.
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface  $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @return void
      */
     protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output)

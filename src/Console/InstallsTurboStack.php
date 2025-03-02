@@ -104,6 +104,8 @@ trait InstallsTurboStack
             // NPM Packages...
             $this->updateNodePackages(function ($packages) {
                 return [
+                    '@tailwindcss/vite' => '^4.0',
+                    'autoprefixer' => '^10.4.20',
                     'tailwindcss' => '^4.0',
                     'el-transition' => '^0.0.7',
                 ] + $packages;

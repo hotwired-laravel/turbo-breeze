@@ -105,12 +105,7 @@ trait InstallsTurboStack
             // NPM Packages...
             $this->updateNodePackages(function ($packages) {
                 return [
-                    '@tailwindcss/forms' => '^0.5.3',
-                    '@tailwindcss/aspect-ratio' => '^0.4.2',
-                    '@tailwindcss/typography' => '^0.5.10',
-                    'autoprefixer' => '^10.4.12',
-                    'postcss' => '^8.4.18',
-                    'tailwindcss' => '^3.2.1',
+                    'tailwindcss' => '^4.0',
                     'el-transition' => '^0.0.7',
                 ] + $packages;
             });

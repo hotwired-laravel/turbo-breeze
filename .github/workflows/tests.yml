@@ -11,13 +11,13 @@ on:
 
 jobs:
   stub-tests:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: true
       matrix:
         stack: [turbo, turbo-vite]
-        laravel: [10.*, 11.*]
+        laravel: [11.*, 12.*]
 
     name: Test Stubs - Laravel ${{ matrix.laravel }} - ${{ matrix.stack }}
 

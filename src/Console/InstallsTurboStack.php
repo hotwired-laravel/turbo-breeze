@@ -76,7 +76,6 @@ trait InstallsTurboStack
 
         if (! $importmaps) {
             // Vite stuff...
-            copy(__DIR__ . '/../../stubs/turbo/postcss.config.js', base_path('postcss.config.js'));
             copy(__DIR__ . '/../../stubs/turbo/vite.config.js', base_path('vite.config.js'));
         } else {
             // Install Packages...
@@ -105,7 +104,6 @@ trait InstallsTurboStack
             // NPM Packages...
             $this->updateNodePackages(function ($packages) {
                 return [
-                    '@tailwindcss/postcss' => '^4.0',
                     'tailwindcss' => '^4.0',
                     'el-transition' => '^0.0.7',
                 ] + $packages;

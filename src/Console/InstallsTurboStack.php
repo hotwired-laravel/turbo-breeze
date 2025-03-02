@@ -92,7 +92,6 @@ trait InstallsTurboStack
         }
 
         // TailwindCSS...
-        copy(__DIR__ . '/../../stubs/turbo/tailwind.config.js', base_path('tailwind.config.js'));
         copy(__DIR__ . '/../../stubs/turbo/resources/css/app.css', resource_path('css/app.css'));
 
         Process::forever()->path(base_path())->tty(ProcessProcess::isTtySupported())->run([$this->phpBinary(), 'artisan', 'turbo:install'], function ($_type, $output) {

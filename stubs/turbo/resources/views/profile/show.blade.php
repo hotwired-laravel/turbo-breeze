@@ -8,11 +8,11 @@
     <div class="py-12">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div
-                class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg space-y-6 [&>a]:first-of-type:[&_li]:rounded-t-lg [&>button]:first-of-type:[&_li]:rounded-t-lg [&>a]:last-of-type:[&_li]:rounded-b-lg [&>button]:last-of-type:[&_li]:rounded-b-lg">
+                class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg space-y-6 [&_li]:first-of-type:[&>a]:rounded-t-lg [&_li]:first-of-type:[&>button]:rounded-t-lg [&_li]:last-of-type:[&>a]:rounded-b-lg [&_li]:last-of-type:[&>button]:rounded-b-lg">
                 <ul class="bg-gray-100 dark:bg-gray-700 rounded-lg divide-y dark:divide-gray-600">
                     <li>
                         <a href="{{ route('profile.edit') }}"
-                            class="flex items-center space-x-2 w-full p-4 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">
+                            class="flex items-center space-x-2 w-full p-4 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-hidden focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -24,7 +24,7 @@
 
                     <li>
                         <a href="{{ route('profile.password.edit') }}"
-                            class="flex items-center space-x-2 w-full p-4 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">
+                            class="flex items-center space-x-2 w-full p-4 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-hidden focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -38,7 +38,7 @@
                 <ul class="bg-gray-100 dark:bg-gray-700 rounded-lg divide-y dark:divide-gray-600">
                     <li>
                         <a href="{{ route('profile.delete') }}"
-                            class="flex items-center space-x-2 w-full p-4 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">
+                            class="flex items-center space-x-2 w-full p-4 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-hidden focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -55,7 +55,7 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit"
-                                class="flex items-center space-x-2 w-full p-4 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">
+                                class="flex items-center space-x-2 w-full p-4 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-hidden focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round"

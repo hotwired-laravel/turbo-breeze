@@ -6,6 +6,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Process\Process as ProcessProcess;
 
 trait InstallsTurboStack
 {
@@ -79,10 +80,10 @@ trait InstallsTurboStack
             copy(__DIR__ . '/../../stubs/turbo/vite.config.js', base_path('vite.config.js'));
         } else {
             // Install Packages...
-            Process::forever()->path(base_path())->tty(PHP_OS != 'WINNT' && is_writable('/dev/tty'))->run([$this->phpBinary(), 'artisan', 'importmap:install'], function ($_type, $output) {
+            Process::forever()->path(base_path())->tty(ProcessProcess::isTtySupported())->run([$this->phpBinary(), 'artisan', 'importmap:install'], function ($_type, $output) {
                 $this->output->write($output);
             });
-            Process::forever()->path(base_path())->tty(PHP_OS != 'WINNT' && is_writable('/dev/tty'))->run([$this->phpBinary(), 'artisan', 'tailwindcss:install'], function ($_type, $output) {
+            Process::forever()->path(base_path())->tty(ProcessProcess::isTtySupported())->run([$this->phpBinary(), 'artisan', 'tailwindcss:install'], function ($_type, $output) {
                 $this->output->write($output);
             });
 
@@ -94,10 +95,10 @@ trait InstallsTurboStack
         copy(__DIR__ . '/../../stubs/turbo/tailwind.config.js', base_path('tailwind.config.js'));
         copy(__DIR__ . '/../../stubs/turbo/resources/css/app.css', resource_path('css/app.css'));
 
-        Process::forever()->path(base_path())->tty(PHP_OS != 'WINNT' && is_writable('/dev/tty'))->run([$this->phpBinary(), 'artisan', 'turbo:install'], function ($_type, $output) {
+        Process::forever()->path(base_path())->tty(ProcessProcess::isTtySupported())->run([$this->phpBinary(), 'artisan', 'turbo:install'], function ($_type, $output) {
             $this->output->write($output);
         });
-        Process::forever()->path(base_path())->tty(PHP_OS != 'WINNT' && is_writable('/dev/tty'))->run([$this->phpBinary(), 'artisan', 'stimulus:install', '--strada'], function ($_type, $output) {
+        Process::forever()->path(base_path())->tty(ProcessProcess::isTtySupported())->run([$this->phpBinary(), 'artisan', 'stimulus:install', '--strada'], function ($_type, $output) {
             $this->output->write($output);
         });
 
@@ -115,7 +116,7 @@ trait InstallsTurboStack
                 ] + $packages;
             });
 
-            Process::forever()->path(base_path())->tty(PHP_OS != 'WINNT' && is_writable('/dev/tty'))->run([$this->phpBinary(), 'artisan', 'stimulus:manifest'], function ($_type, $output) {
+            Process::forever()->path(base_path())->tty(ProcessProcess::isTtySupported())->run([$this->phpBinary(), 'artisan', 'stimulus:manifest'], function ($_type, $output) {
                 $this->output->write($output);
             });
 
@@ -131,7 +132,7 @@ trait InstallsTurboStack
         }
 
         if ($importmaps) {
-            Process::forever()->path(base_path())->tty(PHP_OS != 'WINNT' && is_writable('/dev/tty'))->run([$this->phpBinary(), 'artisan', 'importmap:pin', 'el-transition'], function ($_type, $output) {
+            Process::forever()->path(base_path())->tty(ProcessProcess::isTtySupported())->run([$this->phpBinary(), 'artisan', 'importmap:pin', 'el-transition'], function ($_type, $output) {
                 $this->output->write($output);
             });
             $this->runStorageLinkCommand();
@@ -163,14 +164,14 @@ trait InstallsTurboStack
     protected function runStorageLinkCommand(): void
     {
         if ($this->hasComposerPackage('laravel/sail') && file_exists(base_path('docker-compose.yml')) && ! env('LARAVEL_SAIL', 0)) {
-            Process::tty(PHP_OS != 'WINNT' && is_writable('/dev/tty'))->run([base_path('vendor/bin/sail'), 'up', '-d'], function ($_type, $output) {
+            Process::tty(ProcessProcess::isTtySupported())->run([base_path('vendor/bin/sail'), 'up', '-d'], function ($_type, $output) {
                 $this->output->write($output);
             });
-            Process::tty(PHP_OS != 'WINNT' && is_writable('/dev/tty'))->run([base_path('vendor/bin/sail'), 'artisan', 'storage:link'], function ($_type, $output) {
+            Process::tty(ProcessProcess::isTtySupported())->run([base_path('vendor/bin/sail'), 'artisan', 'storage:link'], function ($_type, $output) {
                 $this->output->write($output);
             });
         } else {
-            Process::tty(PHP_OS != 'WINNT' && is_writable('/dev/tty'))->run([$this->phpBinary(), 'artisan', 'storage:link'], function ($_type, $output) {
+            Process::tty(ProcessProcess::isTtySupported())->run([$this->phpBinary(), 'artisan', 'storage:link'], function ($_type, $output) {
                 $this->output->write($output);
             });
         }

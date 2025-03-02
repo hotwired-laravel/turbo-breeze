@@ -105,6 +105,7 @@ trait InstallsTurboStack
             // NPM Packages...
             $this->updateNodePackages(function ($packages) {
                 return [
+                    '@tailwindcss/postcss' => '^4.0',
                     'tailwindcss' => '^4.0',
                     'el-transition' => '^0.0.7',
                 ] + $packages;

@@ -9,7 +9,7 @@
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div
                 class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg space-y-6 [&_li]:first-of-type:[&>a]:rounded-t-lg [&_li]:first-of-type:[&>button]:rounded-t-lg [&_li]:last-of-type:[&>a]:rounded-b-lg [&_li]:last-of-type:[&>button]:rounded-b-lg">
-                <ul class="bg-gray-100 dark:bg-gray-700 rounded-lg divide-y dark:divide-gray-600">
+                <ul class="bg-gray-100 dark:bg-gray-700 rounded-lg divide-y divide-gray-200 dark:divide-gray-600">
                     <li>
                         <a href="{{ route('profile.edit') }}"
                             class="flex items-center space-x-2 w-full p-4 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-hidden focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">
@@ -35,7 +35,7 @@
                     </li>
                 </ul>
 
-                <ul class="bg-gray-100 dark:bg-gray-700 rounded-lg divide-y dark:divide-gray-600">
+                <ul class="bg-gray-100 dark:bg-gray-700 rounded-lg divide-y divide-gray-200 dark:divide-gray-600">
                     <li>
                         <a href="{{ route('profile.delete') }}"
                             class="flex items-center space-x-2 w-full p-4 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-hidden focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">
@@ -49,7 +49,7 @@
                     </li>
                 </ul>
 
-                <ul class="bg-gray-100 dark:bg-gray-700 rounded-lg divide-y dark:divide-gray-600">
+                <ul class="bg-gray-100 dark:bg-gray-700 rounded-lg divide-y divide-gray-200 dark:divide-gray-600">
                     <li>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">

@@ -22,7 +22,7 @@ switch ($width) {
 @endphp
 
 <div class="relative" data-controller="dropdown" data-action="turbo:before-cache@window->dropdown#closeNow click@window->dropdown#closeWhenClickedOutside close->dropdown#close:stop">
-    <div data-action="click->dropdown#toggle">
+    <div data-action="click->dropdown#toggle:stop">
         {{ $trigger }}
     </div>
 

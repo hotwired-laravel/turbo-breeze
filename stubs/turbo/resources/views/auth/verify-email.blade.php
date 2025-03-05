@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-guest-layout :title="__('Verify Email')">
     <x-slot name="meta">
         <x-turbo::page-requires-reload />
     </x-slot>

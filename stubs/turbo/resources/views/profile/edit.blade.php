@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :title="__('Edit Profile')">
     <x-slot name="header">
         <h2 class="flex items-center space-x-1 font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             <x-breadcrumbs :links="[route('profile.show') => __('Profile & Settings'), __('Edit Profile')]" />

@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-guest-layout :title="__('Login')">
     <x-slot name="meta">
         <x-turbo::page-requires-reload />
     </x-slot>
